@@ -21,6 +21,9 @@ public class Turret : MonoBehaviour
     public string enemyTag = "Enemy";
 
     public GameObject bulletPrefab;
+
+    public AudioSource fireSound;
+    public AudioSource placementSound;
     private Transform firePoint;
     
     private Transform partToRotate;
@@ -33,6 +36,8 @@ public class Turret : MonoBehaviour
 
         firePoint = partToRotate.Find("Firepoint");
         if(firePoint == null) throw new System.Exception("Could not find firePoint transform!");
+
+        placementSound.Play();
 
         InvokeRepeating("UpdateTarget", 0, 0.5f);
     }
@@ -95,6 +100,8 @@ public class Turret : MonoBehaviour
         GameObject bulletGO = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         bullet.SetDamage(damage);
+
+        fireSound.Play();
 
         if(bullet != null) bullet.SetTarget(target);
     }
