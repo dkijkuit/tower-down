@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class ConcreteTile : MonoBehaviour
 {
     public Color hoverColor;
+    public Color noFundsColor;
 
     [Header("Optional")]
     public GameObject turret;
@@ -36,7 +37,11 @@ public class ConcreteTile : MonoBehaviour
         if(EventSystem.current.IsPointerOverGameObject()) return;
         if (!buildManager.CanBuild) return;
 
-        rend.material.color = hoverColor;
+        if(buildManager.HasMoney){
+            rend.material.color = hoverColor;
+        }else{
+            rend.material.color = noFundsColor;
+        }
     }
 
     void OnMouseExit(){
