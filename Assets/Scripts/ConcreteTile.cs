@@ -7,7 +7,8 @@ public class ConcreteTile : MonoBehaviour
 {
     public Color hoverColor;
 
-    private GameObject turret;
+    [Header("Optional")]
+    public GameObject turret;
     private Renderer rend;
     private Color startColor;
 
@@ -20,28 +21,29 @@ public class ConcreteTile : MonoBehaviour
     }
 
     void OnMouseDown(){
-        if (buildManager.GetTurretToBuild() == null) return;
+        if (!buildManager.CanBuild) return;
 
         if(turret != null) {
             Debug.Log("Cannot build here!");
             return;
         } 
 
-        //Build a turret
-        GameObject turretToBuild = buildManager.GetTurretToBuild();
-        turret = Instantiate(turretToBuild, transform.position, transform.rotation);
-        turret.transform.position = new Vector3(transform.position.x, transform.position.y + (rend.bounds.size.y/2), transform.position.z);
+        buildManager.BuildTurretOn(this);
     }
 
     void OnMouseEnter(){
         //Is over UI element? Then return.
         if(EventSystem.current.IsPointerOverGameObject()) return;
-        if (buildManager.GetTurretToBuild() == null) return;
+        if (!buildManager.CanBuild) return;
 
         rend.material.color = hoverColor;
     }
 
     void OnMouseExit(){
         rend.material.color = startColor;
+    }
+
+    public Vector3 GetBuildPosition(){
+        return new Vector3(transform.position.x, transform.position.y + (rend.bounds.size.y/2), transform.position.z);
     }
 }

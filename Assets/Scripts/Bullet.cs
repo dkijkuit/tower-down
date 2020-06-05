@@ -9,6 +9,8 @@ public class Bullet : MonoBehaviour
 
     public float speed = 70f;
 
+    public float damageRadius = 0f;
+
     private int damage = 1;
 
     public void SetTarget(Transform enemy){
@@ -42,9 +44,35 @@ public class Bullet : MonoBehaviour
     private void HitTarget()
     {
         GameObject effectInstance = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
-        Destroy(effectInstance, 2f);
+
+        if(damageRadius > 0f){
+            DamageEnemiesInRadius();
+        } else {
+            DamageEnemy(target.gameObject);
+        }
+
+        Destroy(effectInstance, 5f);
         Destroy(gameObject);
-        Enemy enemy = target.gameObject.GetComponent<Enemy>();
+    }
+
+    private void DamageEnemy(GameObject enemyGO){
+        Enemy enemy = enemyGO.GetComponent<Enemy>();
         enemy.InflictDamage(damage);
+    }
+
+    private void DamageEnemiesInRadius()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, damageRadius);
+        foreach (Collider collider in colliders){
+            if(collider.tag == "Enemy"){
+                GameObject enemyGO = collider.gameObject;
+                DamageEnemy(enemyGO);
+            }
+        }
+    }
+
+    void OnDrawGizmosSelected(){
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, damageRadius);
     }
 }
