@@ -12,6 +12,6 @@ public class MoneyUI : MonoBehaviour
     }
 
     void Update() {
-        moneyText.text = "$" + PlayerStats.Money.ToString();
+        moneyText.text = "$" + PlayerStats.instance.getMoney().ToString();
     }
 }

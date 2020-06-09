@@ -21,23 +21,21 @@ public class BuildManager : MonoBehaviour
     }
 
     public bool CanBuild{ get {return turretToBuild != null; } }
-    public bool HasMoney{ get {return PlayerStats.Money >= turretToBuild.cost ; } }
+    public bool HasMoney{ get {return PlayerStats.instance.getMoney() >= turretToBuild.cost ; } }
 
     public void BuildTurretOn(ConcreteTile tile){
-        if(PlayerStats.Money < turretToBuild.cost){
+        if(PlayerStats.instance.getMoney() < turretToBuild.cost){
             Debug.Log("Not enough money!");
             return;
         }
 
-        PlayerStats.Money -= turretToBuild.cost;
+        PlayerStats.instance.subtractMoney(turretToBuild.cost);
 
         GameObject turret = Instantiate(turretToBuild.prefab, tile.GetBuildPosition(), Quaternion.identity);
         tile.turret = turret;
 
         GameObject effect = Instantiate(buildEffect, tile.GetBuildPosition(), Quaternion.identity);
         Destroy(effect, 5f);
-
-        Debug.Log("Money left: " + PlayerStats.Money);
     }
 
     public void SelectTurretToBuild(TurretBlueprint turretBlueprint){

@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 
     public int health = 5;
 
-    public int cashReward = 10;
+    public uint cashReward = 10;
 
     private Transform target;
     private int waypointIndex = 0;
@@ -41,8 +41,7 @@ public class Enemy : MonoBehaviour
     public void InflictDamage(int damage){
         health -= damage;
         if(health <= 0){
-            PlayerStats.Money += cashReward;
-            Debug.Log("Money left: " + PlayerStats.Money);
+            PlayerStats.instance.addMoney(cashReward);
             Destroy(gameObject);
         }
     }
