@@ -7,9 +7,14 @@ public class LivesUI : MonoBehaviour
     
     void Start(){
         PlayerStats.instance.onHealthUpdated += UpdateLivesText;
+        GameManager.instance.onGameEnded += UpdateEndGameText;
     }
     
     private void UpdateLivesText(int health){
         livesText.text = health.ToString() + " LIVES";
+    }
+
+    private void UpdateEndGameText(){
+        livesText.text = "You are DEAD!";
     }
 }

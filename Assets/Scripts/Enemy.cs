@@ -8,6 +8,10 @@ public class Enemy : MonoBehaviour
 
     public uint cashReward = 10;
 
+    public uint damage = 1;
+
+    public GameObject deathEffect;
+
     private Transform target;
     private int waypointIndex = 0;
 
@@ -29,11 +33,11 @@ public class Enemy : MonoBehaviour
 
     void GetNextWayPoint()
     {
-        if(waypointIndex >= Waypoints.waypoints.Length - 1)
-        {
-            Destroy(gameObject);
+        if(waypointIndex >= Waypoints.waypoints.Length - 1) {
+            endPath();
             return;
         }
+        
         waypointIndex++;
         target = Waypoints.waypoints[waypointIndex];
     }
@@ -41,8 +45,20 @@ public class Enemy : MonoBehaviour
     public void InflictDamage(int damage){
         health -= damage;
         if(health <= 0){
-            PlayerStats.instance.addMoney(cashReward);
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    void Die(){
+        PlayerStats.instance.AddMoney(cashReward);
+        GameObject deathEffectGO = Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(deathEffectGO, 5f);
+        Destroy(gameObject);
+    }
+
+    void endPath(){
+        PlayerStats.instance.TakeLives((int)this.damage);
+        Debug.Log("Enemy got to destination inflicting damage: "+this.damage);
+        Destroy(gameObject);
     }
 }

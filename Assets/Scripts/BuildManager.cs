@@ -29,7 +29,7 @@ public class BuildManager : MonoBehaviour
             return;
         }
 
-        PlayerStats.instance.subtractMoney(turretToBuild.cost);
+        PlayerStats.instance.SubtractMoney(turretToBuild.cost);
 
         GameObject turret = Instantiate(turretToBuild.prefab, tile.GetBuildPosition(), Quaternion.identity);
         tile.turret = turret;

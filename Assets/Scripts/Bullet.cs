@@ -57,7 +57,11 @@ public class Bullet : MonoBehaviour
 
     private void DamageEnemy(GameObject enemyGO){
         Enemy enemy = enemyGO.GetComponent<Enemy>();
-        enemy.InflictDamage(damage);
+        if(enemy != null){
+            enemy.InflictDamage(damage);
+        } else {
+            Debug.LogError("Missing enemy component on enemy: "+enemyGO);
+        }
     }
 
     private void DamageEnemiesInRadius()

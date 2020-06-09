@@ -26,11 +26,11 @@ public class PlayerStats : MonoBehaviour
         return money;
     }
 
-    public void addMoney(uint amount){
+    public void AddMoney(uint amount){
         money += amount;
     }
 
-    public void subtractMoney(uint amount){
+    public void SubtractMoney(uint amount){
         int newAmount = (int)(money - amount);
         if(newAmount < 0){
             money = 0;
@@ -43,9 +43,12 @@ public class PlayerStats : MonoBehaviour
         int newHealth = health - livesToTake;
         if(newHealth <= 0){
             health = 0;
+            GameManager.instance.EndGame();
         } else {
             health = newHealth;
         }
+
+        HealthUpdated();
     }
 
     public event Action<int> onHealthUpdated;
@@ -54,4 +57,6 @@ public class PlayerStats : MonoBehaviour
             onHealthUpdated(health);
         }
     }
+
+    
 }
